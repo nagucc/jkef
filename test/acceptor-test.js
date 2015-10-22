@@ -1,4 +1,4 @@
-require('../app/models/acceptor');
+var AcceptorManager = require('../app/models/acceptor').AcceptorManager;
 
 var should = require("should");
 
@@ -7,11 +7,7 @@ var mongoose = require('mongoose'),
 
 var url = 'mongodb://localhost/jkef';
 
-mongoose.connect(url);
-var db = mongoose.connection;
-db.on('error', function () {
-  throw new Error('unable to connect to database at ' + url);
-});
+var am = new AcceptorManager(url);
 
 describe('Acceptor model test', function () {
 
@@ -22,7 +18,8 @@ describe('Acceptor model test', function () {
 			name: 'test',
 			phone: '1233'
 		});
-		acceptor.save(function (err) {
+
+		am.upsertAcceptor(acceptor, (err) => {
 			should.not.exist(err);
 			should.exist(acceptor._id);
 			one = acceptor;
@@ -41,45 +38,24 @@ describe('Acceptor model test', function () {
 			project: '奖学金',
 			account: 1000*1000
 		});
-		one.save(function (err) {
+		am.upsertAcceptor(one, (err) => {
 			should.not.exist(err);
 			done();
-		});
+		})
 	});
 
 	it('根据Id查找受助者', function (done) {
-		Acceptor.findById(one._id, function (err, acce) {
+		am.findById(one._id, (err, acce) => {
 			acce.name.should.eql('test');
 			done();
 		});
 	});
 
 	it('分类型和年份计算捐助金额', function (done) {
-		Acceptor.mapReduce({
-			map: function () {
-				if(this.records){
-					this.records.forEach(function (record) {
-						emit({ 
-							project: record.project,
-							year: record.date.getYear() + 1900
-						}, {
-							amount: record.amount,
-							count: 1
-						});
-					});
-				}
-			},
-			reduce: function (key, values) {
-				return {
-					amount: Array.sum(values),
-					count: values.length
-				};
-			}
-		}, function (err, result) {
-			//result: [{"_id":{"project":"奖学金","year":2015},"value":2000000}]
+		am.statByYear((err, result) => {
 			should.not.exist(err);
 			result.length.should.above(0);
 			done();
-		});
+		})
 	});
 });
