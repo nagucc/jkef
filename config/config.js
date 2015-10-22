@@ -9,16 +9,21 @@ var config = {
       name: 'jkef'
     },
     port: 18080,
-    db: 'mongodb://localhost/test'
+    db: process.env.MONGO_URL
   },
 
   production: {
-    root: rootPath,
-    app: {
-      name: 'jkef'
-    },
     port: 18080,
-    db: ''
+    db: process.env.MONGO_URL,
+    wxent: {
+      corpId: process.env.WXE_CORPID,
+      secret: process.env.WXE_SECRET,
+      angetId: process.env.WXE_AGENTID
+    },
+    redis: {
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT
+    }
   }
 };
 

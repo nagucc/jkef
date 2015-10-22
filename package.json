@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "NODE_ENV=production node app.js",
+    "start": "NODE_ENV=production node --use_strict app.js",
     "test": "mocha --compilers js:babel/register"
   },
   "dependencies": {
