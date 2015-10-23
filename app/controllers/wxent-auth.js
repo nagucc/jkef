@@ -7,7 +7,7 @@ var express = require('express'),
   router = express.Router(),
   mongoose = require('mongoose'),
   Acceptor = mongoose.model('Acceptor');
-var config = require('../../config'),
+var config = require('../config/config'),
   wxcfg = config.wxent,
   redis = config.redis;
 
