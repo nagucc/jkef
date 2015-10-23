@@ -14,7 +14,7 @@ var config = require('../../config'),
 var API = require('wxent-api-redis');
 module.exports = function (app) {
   app.use('/auth', router);
-};
+}
 
 
 var getRedirectUri = function (req, res, next) {
