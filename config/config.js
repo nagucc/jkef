@@ -9,7 +9,16 @@ var config = {
       name: 'jkef'
     },
     port: 18080,
-    db: process.env.MONGO_URL
+    db: 'localhost/jkef',
+    wxent: {
+      corpId: process.env.WXE_CORPID,
+      secret: process.env.WXE_SECRET,
+      angetId: process.env.WXE_AGENTID
+    },
+    redis: {
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT
+    }
   },
 
   production: {
