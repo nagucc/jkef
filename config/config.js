@@ -13,7 +13,8 @@ var config = {
     wxent: {
       corpId: process.env.WXE_CORPID,
       secret: process.env.WXE_SECRET,
-      angetId: process.env.WXE_AGENTID
+      angetId: process.env.WXE_AGENTID,
+      adminRoleId: process.env.ADMIN_ROLE_ID
     },
     redis: {
       host: process.env.REDIS_HOST || 'localhost',
@@ -27,7 +28,8 @@ var config = {
     wxent: {
       corpId: process.env.WXE_CORPID,
       secret: process.env.WXE_SECRET,
-      angetId: process.env.WXE_AGENTID
+      angetId: process.env.WXE_AGENTID,
+      adminRoleId: process.env.ADMIN_ROLE_ID
     },
     redis: {
       host: process.env.REDIS_HOST,
