@@ -7,7 +7,13 @@ var mongoose = require('mongoose'),
 
 var url = 'mongodb://localhost/jkef';
 
-var am = new AcceptorManager(url);
+mongoose.connect(url);
+var db = mongoose.connection;
+db.on('error', function () {
+  throw new Error('unable to connect to database at ' + config.db);
+});
+
+var am = new AcceptorManager();
 
 describe('Acceptor model test', function () {
 
@@ -19,7 +25,7 @@ describe('Acceptor model test', function () {
 			phone: '1233'
 		});
 
-		am.upsertAcceptor(acceptor, (err) => {
+		am.upsert(acceptor, (err) => {
 			should.not.exist(err);
 			should.exist(acceptor._id);
 			one = acceptor;
@@ -38,7 +44,7 @@ describe('Acceptor model test', function () {
 			project: '奖学金',
 			account: 1000*1000
 		});
-		am.upsertAcceptor(one, (err) => {
+		am.upsert(one, (err) => {
 			should.not.exist(err);
 			done();
 		})
@@ -50,6 +56,14 @@ describe('Acceptor model test', function () {
 			done();
 		});
 	});
+
+	it('列出全部受助者', function (done) {
+		am.list((err, as) => {
+			should.not.exist(err);
+			as.length.should.above(0);
+			done();
+		});
+	})
 
 	it('分类型和年份计算捐助金额', function (done) {
 		am.statByYear((err, result) => {

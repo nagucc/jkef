@@ -44,13 +44,14 @@ var jkefRecordSchemaObject = {
     phone:String,
 
     // 证件
-    idCards:[{
-        type: String,
-        no: String
-    }],
+    idCard: String,
+
+    // 性别
+    isMale: Boolean,
 
     // 记录
     records: [{
+        _id: Schema.Types.ObjectId,
         date: Date,
         project:String,
         amount: Number,
@@ -64,18 +65,16 @@ mongoose.model('Acceptor', schema);
 var Acceptor = mongoose.model('Acceptor');
 
 class AcceptorManager {
-    constructor(url, options) {
-        this.mgurl = url;
+    constructor(options) {
         this.mgoptions = options;
 
-        mongoose.connect(url); 
     }
 
-    list() {
-
+    list(cb) {
+        Acceptor.find({}, cb);
     }
 
-    upsertAcceptor(acceptor, cb) {
+    upsert(acceptor, cb) {
         if(acceptor instanceof Acceptor){
             acceptor.save(cb);
         } else {
@@ -109,6 +108,10 @@ class AcceptorManager {
                 };
             }
         }, cb);
+    }
+
+    remove(id, cb) {
+        Acceptor.findByIdAndRemove(id, cb);
     }
 }
 
