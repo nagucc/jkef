@@ -6,11 +6,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var compress = require('compression');
 var methodOverride = require('method-override');
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
+
+var cors = require('cors');
+var config = require('./config');
 
 module.exports = function(app, config) {
-  // app.set('views', config.root + '/app/views');
-  // app.set('view engine', 'jade');
-
   var env = process.env.NODE_ENV || 'development';
   app.locals.ENV = env;
   app.locals.ENV_DEVELOPMENT = env == 'development';
@@ -20,40 +22,34 @@ module.exports = function(app, config) {
   app.use(bodyParser.urlencoded({
     extended: true
   }));
-  app.use(cookieParser());
+  app.use(cookieParser('jkef.nagu.cc cookie key'));
   app.use(compress());
-  // app.use(express.static(config.root + '/public'));
   app.use(methodOverride());
+
+  app.use(session({
+    store: new RedisStore({
+      host: config.redis.host,
+      port: config.redis.port
+    }),
+    secret: 'jkef.nagu.cc session key',
+    resave: true,
+    saveUninitialized: false,
+    cookie: {
+      path    : '/',
+      httpOnly: false,
+      maxAge  : 24*60*60*1000
+    },
+  }));
+
+  app.use(cors({
+    origin: function (origin, cb) {
+      cb(null, true);
+    },
+    credentials: true
+  }));
 
   var controllers = glob.sync(config.root + '/app/controllers/*.js');
   controllers.forEach(function (controller) {
-    require(controller)(app);
+    require(controller)(app, config);
   });
-
-  app.use(function (req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-  });
-  
-  // if(app.get('env') === 'development'){
-  //   app.use(function (err, req, res, next) {
-  //     res.status(err.status || 500);
-  //     res.render('error', {
-  //       message: err.message,
-  //       error: err,
-  //       title: 'error'
-  //     });
-  //   });
-  // }
-
-  // app.use(function (err, req, res, next) {
-  //   res.status(err.status || 500);
-  //     res.render('error', {
-  //       message: err.message,
-  //       error: {},
-  //       title: 'error'
-  //     });
-  // });
-
 };
