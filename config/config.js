@@ -9,7 +9,7 @@ var config = {
       name: 'jkef'
     },
     port: 18080,
-    db: 'mongodb://localhost/jkef',
+    db: process.env.MONGO_URL || 'mongodb://localhost/jkef',
     wxent: {
       corpId: process.env.WXE_CORPID,
       secret: process.env.WXE_SECRET,
