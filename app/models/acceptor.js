@@ -27,6 +27,7 @@ var jkefRecordSchemaObject = {
     masterSchool: {
         name: String,
         major: String,
+        subject: String,
         admissionYear: Number
     },
 
@@ -34,6 +35,7 @@ var jkefRecordSchemaObject = {
     doctorSchool: {
         name: String,
         major: String,
+        subject: String,
         admissionYear: Number
     },
 
@@ -44,10 +46,20 @@ var jkefRecordSchemaObject = {
     phone:String,
 
     // 证件
-    idCard: String,
+    idCard: {
+        category: String,   // 类型，身份证或组织机构代码证
+        number: String   // 号码
+    },
 
     // 性别
     isMale: Boolean,
+
+    // 微信企业号Id
+    wxent_UserIds: [{
+        corpName: String,
+        coprId: String,
+        userId: String
+    }],
 
     // 记录
     records: [{

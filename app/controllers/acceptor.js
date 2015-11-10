@@ -49,18 +49,7 @@ module.exports = function (app, config) {
       res.send({ret: -1, msg: 'acceptor must have a name.'});
       return;
     }
-    var acceptor = new Acceptor({
-      name: name,
-      homeAddress: req.body.homeAddress,
-      phone: req.body.phone,
-      idCard: req.body.idCard,
-      highSchool: req.body.highSchool,
-      bachelorSchool: req.body.bachelorSchool,
-      masterSchool: req.body.masterSchool,
-      doctorSchool: req.body.doctorSchool,
-      records: req.body.records
-    });
-
+    var acceptor = new Acceptor(req.body);
     AM.upsert(acceptor, (err) => {
       if(err) res.send({ret: -1, msg: err});
       else res.send({ret: 0, data: acceptor});
@@ -128,7 +117,7 @@ module.exports = function (app, config) {
       if(err) res.send({ret: -1, msg: msg});
       else {
         acc.records.push(record);
-        AM.upsert(acc, (err, result) => Ï{
+        AM.upsert(acc, (err, result) => {
           if(err) res.send({ret: -1, msg: msg});
           else res.send({ret: 0, data: acc});
         });
