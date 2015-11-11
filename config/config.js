@@ -1,14 +1,17 @@
 var path = require('path'),
     rootPath = path.normalize(__dirname + '/..'),
     env = process.env.NODE_ENV || 'development';
-
 var config = {
   development: {
     root: rootPath,
     app: {
       name: 'jkef'
     },
-    port: 18080,
+    /*
+    在本机测试应当使用80端口。启动程序时，应首先运行`sudo -s`，否则无法使用80端口。
+    也不能直接使用`sudo node app.js` ，这样无法读取到环境变量。
+    */
+    port: 80,
     db: process.env.MONGO_URL || 'mongodb://localhost/jkef',
     wxent: {
       corpId: process.env.WXE_CORPID,

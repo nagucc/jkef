@@ -68,6 +68,7 @@ module.exports = function (app, config) {
     else if (userId)
 
       // 获取用户信息
+
       wxapi.getUser(userId, (err, result) => {
         if(err)
           res.send({ret: -1, msg: err});
