@@ -12,7 +12,6 @@ var jkefRecordSchemaObject = {
     // 高中
     highSchool: {
         name: String,
-        category: String,
         admissionYear: Number
     },
 
