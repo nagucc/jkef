@@ -38,11 +38,20 @@ var jkefRecordSchemaObject = {
         admissionYear: Number
     },
 
+    // 工作单位
+    company: {
+        name: String,       // 单位名称
+        title: String       // 职称／职务
+    }
+
     // 家庭住址
     homeAddress:String,
 
     // 联系电话
     phone:String,
+
+    // 是否是推荐人
+    isRecommander: Boolean,
 
     // 证件
     idCard: {
