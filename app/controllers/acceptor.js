@@ -56,30 +56,18 @@ module.exports = function (app, config) {
     });
   });
 
-  router.post('/:id', ensureUserLogged, (req, res, next) => {
-    var id = req.params.id;
-    if(!id) {
+  // 更新指定id的受助者的信息
+  router.post('/', ensureUserLogged, (req, res, next) => {
+    if(!req.body._id) {
       res.send({ret: -1, msg: 'bad id.'});
       return;
     }
 
-    var name = req.body.name;
-    if(!name) {
+    if(!req.body.name) {
       res.send({ret: -1, msg: 'acceptor must have a name.'});
       return;
     }
-    var acceptor = new Acceptor({
-      _id: id,
-      name: name,
-      homeAddress: req.body.homeAddress,
-      phone: req.body.phone,
-      idCard: req.body.idCard,
-      highSchool: req.body.highSchool,
-      bachelorSchool: req.body.bachelorSchool,
-      masterSchool: req.body.masterSchool,
-      doctorSchool: req.body.doctorSchool,
-      records: req.body.records
-    });
+    var acceptor = new Acceptor(req.body);
 
     AM.upsert(acceptor, (err) => {
       if(err) res.send({ret: -1, msg: err});

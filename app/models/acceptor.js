@@ -42,7 +42,7 @@ var jkefRecordSchemaObject = {
     company: {
         name: String,       // 单位名称
         title: String       // 职称／职务
-    }
+    },
 
     // 家庭住址
     homeAddress:String,
@@ -96,7 +96,12 @@ class AcceptorManager {
 
     upsert(acceptor, cb) {
         if(acceptor instanceof Acceptor){
-            acceptor.save(cb);
+            if(acceptor._id) {                  // _id已存在，更新文档
+                var id = acceptor._id;
+                var upsertData = acceptor.toObject();
+                delete upsertData._id;
+                Acceptor.update({_id: id}, upsertData, {upsert: true}, cb);
+            } else acceptor.save(cb);
         } else {
             cb('acceptor must be a instance of Acceptor model.');
         }
