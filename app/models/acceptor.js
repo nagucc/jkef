@@ -90,8 +90,8 @@ class AcceptorManager {
 
     }
 
-    list(cb) {
-        Acceptor.find({}, cb);
+    list(projections, cb) {
+        Acceptor.find({}, projections, cb);
     }
 
     upsert(acceptor, cb) {

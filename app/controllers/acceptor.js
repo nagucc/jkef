@@ -24,7 +24,7 @@ module.exports = function (app, config) {
 
   // 获取全部受助人
   router.get('/list', ensureUserLogged, (req, res, next) => {
-    AM.list((err, acceptors) => {
+    AM.list({_id:1, name: 1, isMale: 1, phone: 1, idCard:1 },(err, acceptors) => {
       if(err) res.send({ret: -1, msg: err});
       else res.send({ret: 0, data: acceptors});
     });
